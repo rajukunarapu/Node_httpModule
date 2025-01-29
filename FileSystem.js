@@ -5,6 +5,7 @@
 
 let http = require("http"); // Importing http module
 let fs = require("fs"); // Importing fileSystem module short for 'fs'
+const { throws } = require("assert");
 
 
 // http.createServer((req, res) => {
@@ -22,18 +23,20 @@ let fs = require("fs"); // Importing fileSystem module short for 'fs'
 // data = send the data of file being opened
 
 fs.readFile("index.txt", (error, data) => {
-    console.log(error)
+    if(error) throw error
     console.log(data.toString())
 });
 
 // 2. appendFile(file.extension,"content to you want to add to existing0,callback(error,data)")
-fs.appendFile('index.txt'," I'm Newly added content by appendFile method.",(error,data)=>{
+fs.appendFile('index.txt'," I'm Newly added content by appendFile method.",(error)=>{
+    if(error) throw error
     console.log("Succesfully added to index.txt file")
 })
 
 // 3. WriteFile(file.extension,"content that replaces existing content",callback(error,data))
-fs.writeFile('index.txt',"Repalced by writeFile method",(error,data)=>{
-    console.log(data)
+fs.writeFile('index.txt',"Repalced by writeFile method",(error)=>{
+    if (error) throw error
+    
 })
 
 // 4. unlink(file.extension,callback(error))
@@ -42,3 +45,11 @@ fs.unlink('index.js',(error)=>{
 })
 
 // Note: use only one methode to see the changes.
+
+// In this example, We are appending one file content to another file by using readFile() and appendFile().
+fs.readFile('text.txt','utf-8',(error,data)=>{
+    fs.appendFile('index.txt',data,(error)=>{
+        if (error) throw error
+        console.log('successfully appended.')
+    })
+})
